@@ -28,43 +28,33 @@ bool is_adjacent(const string& word1, const string& word2) {
 
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list) {
     if (begin_word == end_word) {
-        return vector<string>(1, begin_word);
+        return {begin_word};
     }
-    
+
     queue<vector<string>> ladder_queue;
+    ladder_queue.push({begin_word});
     set<string> visited;
-    
-    vector<string> initial_ladder;
-    initial_ladder.push_back(begin_word);
-    ladder_queue.push(initial_ladder);
     visited.insert(begin_word);
-    
+
     while (!ladder_queue.empty()) {
-        vector<string> current_ladder = ladder_queue.front();
+        vector<string> ladder = ladder_queue.front();
         ladder_queue.pop();
-        
-        string last_word = current_ladder.back();
-        
+        string last_word = ladder.back();
+
         for (const string& word : word_list) {
-            if (visited.find(word) != visited.end()) {
-                continue;
-            }
-            
-            if (is_adjacent(last_word, word)) {
-                vector<string> new_ladder = current_ladder;
-                new_ladder.push_back(word);
-                
-                if (word == end_word) {
-                    return new_ladder;
-                }
-                
+            if (is_adjacent(last_word, word) && visited.find(word) == visited.end()) {
                 visited.insert(word);
+                vector<string> new_ladder = ladder;
+                new_ladder.push_back(word);
+
+                if (word == end_word) return new_ladder;
+
                 ladder_queue.push(new_ladder);
             }
         }
     }
-    
-    return vector<string>();
+
+    return {};
 }
 
 void load_words(set<string>& word_list, const string& file_name) {
