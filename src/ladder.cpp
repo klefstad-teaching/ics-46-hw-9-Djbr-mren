@@ -72,11 +72,10 @@ void print_word_ladder(const vector<string>& ladder) {
     }
 
     cout << "Word ladder found: ";
-    for (size_t i = 0; i < ladder.size(); ++i) {
-        cout << ladder[i];
-        if (i != ladder.size() - 1) cout << " ";
+    for (const auto& word : ladder) {
+        cout << " " << word;
     }
-    cout << endl;
+    cout << "\n";
 }
 
 void verify_word_ladder() {
